@@ -5,7 +5,40 @@ import Sidebar from "./components/Sidebar";
 
 const prisma = new PrismaClient();
 
-const fetRestaturantsByCity = (city: string | undefined) => {
+interface SearchParams {
+  city?: string;
+  cuisine?: string;
+  price?: string;
+}
+
+const fetRestaturantsByCity = (searchParams: SearchParams) => {
+  const where: any = {};
+
+  if (searchParams.city) {
+    const location = {
+      name: {
+        equals: searchParams.city.toLowerCase(),
+      },
+    };
+    where.location = location;
+  }
+
+  if (searchParams.cuisine) {
+    const cuisine = {
+      name: {
+        equals: searchParams.cuisine.toLowerCase(),
+      },
+    };
+    where.cuisine = cuisine;
+  }
+
+  if (searchParams.price) {
+    const price = {
+      equals: searchParams.price,
+    };
+    where.price = price;
+  }
+
   // Select Type | Fields
   const select = {
     id: true,
@@ -17,36 +50,47 @@ const fetRestaturantsByCity = (city: string | undefined) => {
     slug: true,
   };
 
-  if (!city) return prisma.restaurant.findMany({ select });
-
   return prisma.restaurant.findMany({
-    where: {
-      location: {
-        name: {
-          equals: city.toLowerCase(),
-        },
-      },
-    },
+    where,
     select,
   });
+};
+
+const fetchLocations = async () => {
+  return prisma.location.findMany();
+};
+
+const fetchCuisines = async () => {
+  return prisma.cuisine.findMany();
 };
 
 export default async function Search({
   searchParams,
 }: {
-  searchParams: { city: string };
+  searchParams: SearchParams;
 }) {
-  const restaurants = await fetRestaturantsByCity(searchParams.city);
+  const restaurants = await fetRestaturantsByCity(searchParams);
+  const locations = await fetchLocations();
+  const cuisines = await fetchCuisines();
+
   return (
     <>
       <div className='bg-gradient-to-r to-[#5f6984] from-[#0f1f47] p-2'>
         <Header />
       </div>
       <div className='flex py-4 m-auto w-2/3 justify-between items-start'>
-        <Sidebar />
+        <Sidebar
+          locations={locations}
+          cuisines={cuisines}
+          searchParams={searchParams}
+        />
         <div className='w-5/6'>
           {restaurants.length ? (
-            <RestaturantCard />
+            <>
+              {restaurants.map((restaurant) => (
+                <RestaturantCard key={restaurant.id} restaurant={restaurant} />
+              ))}
+            </>
           ) : (
             <p>Sorry, we found no restaurants in this area</p>
           )}
