@@ -1,6 +1,6 @@
 import { PrismaClient, Cuisine, Location, PRICE, Review } from "@prisma/client";
-import Header from "./components/Header/Header";
-import RestaturantCard from "./components/RestaurantCard/RestaurantCard";
+import Header from "./components/Header";
+import RestaturantCard from "./components/RestaurantCard";
 
 export interface RestaurantCardType {
   id: number;
@@ -36,7 +36,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <div className='py-3 px-36 mt-10 flex flex-wrap'>
+      <div className='py-3 px-36 mt-10 flex flex-wrap justify-center'>
         {restaurants.map((restaurant) => (
           <RestaturantCard key={restaurant.id} restaurant={restaurant} />
         ))}

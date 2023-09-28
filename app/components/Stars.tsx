@@ -1,9 +1,9 @@
 import React from "react";
 import { Review } from "@prisma/client";
-import { calculateReviewRatingAverage } from "../../../utils/ratingsUtils";
-import fullStar from "../../../public/icons/full-star.png";
-import halfStar from "../../../public/icons/half-star.png";
-import emptyStar from "../../../public/icons/empty-star.png";
+import { calculateReviewRatingAverage } from "../../utils/ratingsUtils";
+import fullStar from "../../public/icons/full-star.png";
+import halfStar from "../../public/icons/half-star.png";
+import emptyStar from "../../public/icons/empty-star.png";
 import Image from "next/image";
 
 export default function Stars({
