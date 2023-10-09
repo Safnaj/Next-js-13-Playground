@@ -51,13 +51,14 @@ export default function AuthModalInputs({
         />
       </div>
       {isSignIn ? null : (
-        <div className='my-3 flex justify-between text-sm'>
+        <div className='my-3 flex justify-between text-sm '>
           <input
             type='text'
             className='border rounded p-2 py-3 w-[49%] bg-white'
             placeholder='Phone'
             value={inputs.phone}
             onChange={handleChangeInput}
+            name='phone'
           />
           <input
             type='text'
@@ -65,6 +66,7 @@ export default function AuthModalInputs({
             placeholder='City'
             value={inputs.city}
             onChange={handleChangeInput}
+            name='city'
           />
         </div>
       )}
@@ -75,6 +77,7 @@ export default function AuthModalInputs({
           placeholder='Password'
           value={inputs.password}
           onChange={handleChangeInput}
+          name='password'
         />
       </div>
     </div>
