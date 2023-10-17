@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
+import { setCookie } from "cookies-next";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import * as jose from "jose";
@@ -94,7 +95,16 @@ export default async function handler(
       .setExpirationTime("24h")
       .sign(secret);
 
-    return res.status(200).json({ token: token });
+    // Set the JWT token as a cookie
+    setCookie("jwt", token, { req, res, maxAge: 60 * 6 * 24 });
+
+    return res.status(200).json({
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      phone: user.phone,
+      city: user.city,
+    });
   }
   return res.status(404).json("Unknown Endpoint");
 }
