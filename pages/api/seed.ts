@@ -1322,5 +1322,5 @@ export default async function handler(
   //     ],
   //   });
 
-  res.status(200).json({ name: "hello" });
+  res.status(200).json({ name: "Data seeded successfully !!" });
 }
