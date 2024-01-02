@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { table } from "console";
 import { NextApiRequest, NextApiResponse } from "next";
 import { times } from "../../../../data";
+import { findAvailabileTables } from "../../../../services/findAvailableTables";
 
 const prisma = new PrismaClient();
 
@@ -20,41 +21,6 @@ export default async function handler(
     res.status(400).json({ errorMessage: "Missing query parameters" });
   }
 
-  const searchTimes = times.find((t) => {
-    return t.time === time;
-  })?.searchTimes;
-
-  if (!searchTimes) {
-    res.status(400).json({ errorMessage: "Invalid time" });
-  }
-
-  const bookings = await prisma.booking.findMany({
-    where: {
-      booking_time: {
-        gte: new Date(`${day}T${searchTimes?.[0]}`),
-        lte: new Date(`${day}T${searchTimes?.[searchTimes.length - 1]}`),
-      },
-    },
-    select: {
-      number_of_people: true,
-      booking_time: true,
-      tables: true,
-    },
-  });
-
-  const bookingTablesObj: { [key: string]: { [key: number]: true } } = {};
-
-  // Create an object with all the tables that are already booked
-  bookings.forEach((booking) => {
-    bookingTablesObj[booking.booking_time.toISOString()] =
-      booking.tables.reduce((obj, table) => {
-        return {
-          ...obj,
-          [table.table_id]: true,
-        };
-      }, {});
-  });
-
   const restaurant = await prisma.restaurant.findUnique({
     where: {
       slug,
@@ -67,30 +33,23 @@ export default async function handler(
   });
 
   if (!restaurant) {
-    res.status(404).json({ errorMessage: "Restaurant not found" });
+    return res.status(400).json({
+      errorMessage: "Invalid data provided",
+    });
   }
 
-  const tables = restaurant?.tables;
-
-  const searchTimesWithTables = searchTimes?.map((searchTime) => {
-    return {
-      date: new Date(`${day}T${searchTime}`),
-      time: searchTime,
-      tables,
-    };
+  const searchTimesWithTables = await findAvailabileTables({
+    day,
+    time,
+    res,
+    restaurant,
   });
 
-  // Filter out tables that are already booked
-  searchTimesWithTables?.forEach((t) => {
-    t.tables = t.tables?.filter((table) => {
-      if (bookingTablesObj[t.date.toISOString()]) {
-        if (bookingTablesObj[t.date.toISOString()][table.id]) {
-          return false;
-        }
-        return true;
-      }
+  if (!searchTimesWithTables) {
+    return res.status(400).json({
+      errorMessage: "Invalid data provided",
     });
-  });
+  }
 
   // Filter out times that don't have enough tables
   const availabilities = searchTimesWithTables
