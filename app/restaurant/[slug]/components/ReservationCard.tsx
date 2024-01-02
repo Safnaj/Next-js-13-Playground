@@ -116,20 +116,18 @@ export default function ReservationCard({
       </div>
       {data && data.length ? (
         <div className='mt-4'>
-          <p className='text-reg'>Selec a Time</p>
+          <p className='text-reg'>Select a Time</p>
           <div className='flex flex-wrap mt-2'>
             {data.map((time) => {
               return time.available ? (
-                <div>
-                  <Link
-                    href={`/reserve/${slug}?date=${day}T${time.time}&partySize=${partySize}`}
-                    className='bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3'
-                  >
-                    <p className='text-sm font-bold'>
-                      {convertToDisplayTime(time.time as Time)}
-                    </p>
-                  </Link>
-                </div>
+                <Link
+                  href={`/reserve/${slug}?date=${day}T${time.time}&partySize=${partySize}`}
+                  className='bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3'
+                >
+                  <p className='text-sm font-bold'>
+                    {convertToDisplayTime(time.time as Time)}
+                  </p>
+                </Link>
               ) : (
                 <p className='bg-gray-300 p-2 w-24 mb-3 rounded mr-3'></p>
               );
