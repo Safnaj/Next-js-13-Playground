@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "7d882b0b-ade9-490e-bb2f-8a3cbc5d2182",
+		"name": "Open-Table",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12709713"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Ahamed\",\n    \"lastName\": \"Safnaj\",\n    \"email\": \"safnaj99@live.com\",\n    \"phone\" : \"94777974207\",\n    \"city\": \"Colombo\",\n    \"password\": \"Admin@123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"safnaj99@live.com\",\n    \"password\": \"Admin@123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "me",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InNhZm5hajk5QGxpdmUuY29tIiwiZXhwIjoxNzA0MjcyNjcyfQ.0eLTZmklsjF81SM8iJwJYyVAgLjm7K9GXJaKALljLn4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/auth/me",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reserve",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bookerEmail\": \"safnaj99@live.com\",\n    \"bookerPhone\": \"94777974207\",\n    \"bookerFirstName\": \"Ahamed\",\n    \"bookerLastName\": \"Safnaj\",\n    \"bookerOccasion\": \"\",\n    \"bookerRequest\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2023-02-05&time=15:00:00.000Z&partySize=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"restaurant",
+						"vivaan-fine-indian-cuisine-ottawa",
+						"reserve"
+					],
+					"query": [
+						{
+							"key": "day",
+							"value": "2023-02-05"
+						},
+						{
+							"key": "time",
+							"value": "15:00:00.000Z"
+						},
+						{
+							"key": "partySize",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "availability",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?day=2023-02-03&time=15:00:00.000Z&partySize=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"restaurant",
+						"vivaan-fine-indian-cuisine-ottawa",
+						"availability"
+					],
+					"query": [
+						{
+							"key": "day",
+							"value": "2023-02-03"
+						},
+						{
+							"key": "time",
+							"value": "15:00:00.000Z"
+						},
+						{
+							"key": "partySize",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
