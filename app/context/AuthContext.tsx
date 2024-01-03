@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useState, createContext, useEffect } from "react";
-import axios from "axios";
 import { getCookie } from "cookies-next";
+import axios from "axios";
 
 interface User {
   id: number;
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
   city: string;
+  phone: string;
 }
 
 interface State {
   loading: boolean;
-  data: User | null;
   error: string | null;
+  data: User | null;
 }
 
 interface AuthState extends State {
@@ -25,8 +25,8 @@ interface AuthState extends State {
 
 export const AuthenticationContext = createContext<AuthState>({
   loading: false,
-  data: null,
   error: null,
+  data: null,
   setAuthState: () => {},
 });
 
@@ -42,20 +42,19 @@ export default function AuthContext({
   });
 
   const fetchUser = async () => {
+    setAuthState({
+      data: null,
+      error: null,
+      loading: true,
+    });
     try {
-      setAuthState({
-        loading: true,
-        data: null,
-        error: null,
-      });
-
       const jwt = getCookie("jwt");
 
       if (!jwt) {
         return setAuthState({
-          loading: false,
           data: null,
           error: null,
+          loading: false,
         });
       }
 
@@ -65,19 +64,18 @@ export default function AuthContext({
         },
       });
 
-      // Setting the same JWT for all upcoming calls
       axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 
-      return setAuthState({
-        loading: false,
+      setAuthState({
         data: response.data,
         error: null,
+        loading: false,
       });
     } catch (error: any) {
       setAuthState({
-        loading: false,
         data: null,
         error: error.response.data.errorMessage,
+        loading: false,
       });
     }
   };
@@ -87,7 +85,12 @@ export default function AuthContext({
   }, []);
 
   return (
-    <AuthenticationContext.Provider value={{ ...authState, setAuthState }}>
+    <AuthenticationContext.Provider
+      value={{
+        ...authState,
+        setAuthState,
+      }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );

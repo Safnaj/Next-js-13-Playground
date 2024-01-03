@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { notFound } from "next/navigation";
-import Navbar from "../../components/Navbar";
 import Form from "./components/Form";
 import Header from "./components/Header";
 
@@ -38,7 +37,11 @@ export default async function Reserve({
             date={searchParams.date}
             partySize={searchParams.partySize}
           />
-          <Form />
+          <Form
+            slug={params.slug}
+            partySize={searchParams.partySize}
+            date={searchParams.date}
+          />
         </div>
       </div>
     </>

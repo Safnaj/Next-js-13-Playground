@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useContext } from "react";
-import useAuth from "../../hooks/useAuth";
 import { AuthenticationContext } from "../context/AuthContext";
+import useAuth from "../../hooks/useAuth";
 import AuthModal from "./AuthModal";
 
 export default function Navbar() {
@@ -13,9 +13,9 @@ export default function Navbar() {
   return (
     <nav className='bg-white p-2 flex justify-between'>
       <Link href='' className='font-bold text-gray-700 text-xl'>
-        {" "}
-        OpenTable{" "}
+        OpenTable
       </Link>
+
       <div>
         {loading ? null : (
           <div className='flex'>
